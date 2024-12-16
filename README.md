@@ -13,6 +13,7 @@ npm run dev
 - Особо не использовал библиотеки, кроме iMask
 - Не использовал typescript так как не указано в тз. [Пример на nuxt typescript](https://github.com/mihailgok/portfolio/tree/main/fronts/cryptojob)
 - даты поставил с 1900 года по 2099
+- отправка формы - не указано куда, поэтому просто на эхо-сервер
 
 ## Что можно доработать
 

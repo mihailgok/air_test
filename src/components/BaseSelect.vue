@@ -17,10 +17,10 @@
     </div>
     <Transition name="showList">
       <div class="base_select__list" v-show="isOpen">
-
         <label class="base_select__item" v-for="item in props.dataList" :key="item.name">
           <input type="checkbox" @change="selectItem(item)" :name="item.name"
-            :checked="selectedPunkts.indexOf(item) !== -1">
+            :checked="selectedPunkts.indexOf(item) !== -1"
+            :disabled="props.type === 'single' && selectedPunkts.indexOf(item) !== -1">
           <span></span>
           <span>{{ item.text }}</span>
         </label>
@@ -48,18 +48,14 @@ function selectItem(item) {
     return
   }
 
-  if (!selectedPunkts.value.has(item)) {
-    selectedPunkts.value.add(item);
+  if (selectedPunkts.value.indexOf(item) === -1) {
+    selectedPunkts.value.push(item);
   }
   else {
-    selectedPunkts.value = selectedPunkts.value.filter(el => el.name == item.name);
+    selectedPunkts.value = selectedPunkts.value.filter(el => el.name !== item.name);
   }
   emit('change', selectedPunkts.value);
 }
-
-// window.addEventListener("click", () => {
-//   isOpen.value = false;
-// })
 </script>
 
 
@@ -101,6 +97,8 @@ function selectItem(item) {
     line-height: 110%
     font-weight: 500
     font-family: 'Montserrat', sans-serif
+    white-space: nowrap
+    overflow: hidden
   &__holder
     position: absolute
     left: 18px

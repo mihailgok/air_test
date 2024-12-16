@@ -1,27 +1,29 @@
 <template>
   <label class="input">
-    <input class="input__folder" @change="model = model.replaceAll(/\s+/g, ' ')" @input="maskInput" :type="type"
-      placeholder="" v-model="model">
+    <input class="input__folder" @change="model = model.replaceAll(/\s+/g, ' ')" :type="type" placeholder="&nbsp;"
+      v-model="model" ref="inputElement">
     <span class="input__holder">{{ props.holder }}</span>
     <span class="input__error" v-show="props.error">{{ props.error }}</span>
   </label>
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue';
 import IMask from 'imask';
+const inputElement = ref(null);
 
 const props = defineProps(['holder', 'type', 'error']);
 
 const model = defineModel();
 
-function maskInput(e) {
+onMounted(() => {
   if (props.type == 'tel') {
     const maskOptions = {
       mask: '+{7} (000) 000-00-00'
     };
-    IMask(e.target, maskOptions);
+    IMask(inputElement.value, maskOptions);
   }
-}
+});
 </script>
 
 <style>

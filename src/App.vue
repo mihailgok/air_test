@@ -2,6 +2,7 @@
 import BaseInputVue from "./components/BaseInput.vue";
 import BaseSelect from "./components/BaseSelect.vue";
 import BaseRange from "./components/BaseRange.vue";
+import { sendForm } from "./api/sendForm";
 
 import { ref } from "vue";
 
@@ -43,7 +44,7 @@ const selectList = ref([
   },
   {
     text: "Площадь под услуги",
-    name: "third"
+    name: "second"
   },
   {
     text: "Уличная площадь",
@@ -139,19 +140,13 @@ async function handleSubmit() {
   console.log(form.value)
 
   if (!errors.value.name && !errors.value.phone) {
-    let res = fetch('https://jsonplaceholder.typicode.com/posts', {
-      method: 'POST',
-      body: JSON.stringify(form.value),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    }).then((response) => {
-      console.log(response.json());
-      alert('Форма успешно отправлена!');
-    })
-      .then((json) => console.log(json));
+    const result = sendForm(form.value).then(res => res);
+    const res_data = await result;
 
-    console.log(res);
+    if (res_data) {
+      console.log(res_data);
+      alert("Форма успешно отправлена");
+    }
   }
 }
 
@@ -177,9 +172,10 @@ function closeModal(e) {
             @input="validatePhone" />
           <BaseSelect type="single" holder="Тип помещения" v-model="form.space" :error="errors.space"
             @change="changeSelect" :data-list="selectList" />
+          <!-- <BaseSelect type="multi" holder="Тип помещения" v-model="form.space" :error="errors.space"
+            @change="changeSelect" :data-list="selectList" /> -->
           <BaseInputVue holder="Адрес" type="text" v-model="form.address" :error="errors.address"
             @input="validateAddress" />
-          <!-- <BaseSelect type="single" holder="Тип помещения" /> -->
 
           <div class="range">
             <p class="range__header">Площадь помещения (м2)</p>
